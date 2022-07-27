@@ -56,7 +56,7 @@ func (db *Db) ReadUser(in *users.Id) string {
 			return "Username: " + v.GetUsername() + " Name: " + v.GetName() + " Surname: " + v.GetSurname()
 		}
 	}
-	return "No user of id " + string(in.GetId())
+	return "Couldn't find user of id " + string(in.GetId())
 }
 
 func (db *Db) ReadUsers() string {
