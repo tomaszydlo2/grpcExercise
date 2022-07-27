@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package users;
+
+option go_package="./users";
+
+service users{
+  rpc CreateUser(User) returns (UserResponse){}
+  rpc UpdateUser(User) returns (UserResponse){}
+  rpc DeleteUser(Id) returns (UserResponse){}
+  rpc ReadUser(Id) returns (UserResponse){}
+  rpc ReadUsers(Empty) returns (UserResponse){}
+}
+
+message Empty{
+}
+
+message User{
+   int32 id = 1;
+   string username = 2;
+   string name = 3;
+   string surname = 4;
+}
+
+message Id{
+  int32 id = 1;
+}
+
+message UserResponse {
+  string message = 2;
+}
