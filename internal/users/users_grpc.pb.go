@@ -39,7 +39,7 @@ func NewUsersClient(cc grpc.ClientConnInterface) UsersClient {
 
 func (c *usersClient) CreateUser(ctx context.Context, in *User, opts ...grpc.CallOption) (*UserResponse, error) {
 	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/users.users/dbCreateUser", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/users.users/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +99,7 @@ type UnimplementedUsersServer struct {
 }
 
 func (UnimplementedUsersServer) CreateUser(context.Context, *User) (*UserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method dbCreateUser not implemented")
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedUsersServer) UpdateUser(context.Context, *User) (*UserResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method UpdateUser not implemented")
@@ -136,7 +136,7 @@ func _Users_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(in
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/users.users/dbCreateUser",
+		FullMethod: "/users.users/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(UsersServer).CreateUser(ctx, req.(*User))
@@ -224,7 +224,7 @@ var Users_ServiceDesc = grpc.ServiceDesc{
 	HandlerType: (*UsersServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "dbCreateUser",
+			MethodName: "CreateUser",
 			Handler:    _Users_CreateUser_Handler,
 		},
 		{

@@ -277,12 +277,12 @@ var file_users_proto_goTypes = []interface{}{
 	(*UserResponse)(nil), // 3: users.UserResponse
 }
 var file_users_proto_depIdxs = []int32{
-	1, // 0: users.users.dbCreateUser:input_type -> users.User
+	1, // 0: users.users.CreateUser:input_type -> users.User
 	1, // 1: users.users.UpdateUser:input_type -> users.User
 	2, // 2: users.users.DeleteUser:input_type -> users.Id
 	2, // 3: users.users.ReadUser:input_type -> users.Id
 	0, // 4: users.users.ReadUsers:input_type -> users.Empty
-	3, // 5: users.users.dbCreateUser:output_type -> users.UserResponse
+	3, // 5: users.users.CreateUser:output_type -> users.UserResponse
 	3, // 6: users.users.UpdateUser:output_type -> users.UserResponse
 	3, // 7: users.users.DeleteUser:output_type -> users.UserResponse
 	3, // 8: users.users.ReadUser:output_type -> users.UserResponse
