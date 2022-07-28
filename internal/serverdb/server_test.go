@@ -2,6 +2,7 @@ package serverdb
 
 import (
 	"context"
+	"errors"
 	. "github.com/golang/mock/gomock"
 	"github.com/stretchr/testify/assert"
 	"grpcExercise/internal/db/mocks"
@@ -9,19 +10,18 @@ import (
 	"testing"
 )
 
-func MockServerInit(t *testing.T) (mocks.MockStorage, *Server) {
-
+func MockServerInit(t *testing.T) (mocks.MockStorage, *Server, *Controller) {
 	controller := NewController(t)
-	defer controller.Finish()
 
 	storage := mocks.NewMockStorage(controller)
 
-	return *storage, &Server{Database: storage}
+	return *storage, &Server{Database: storage}, controller
 }
 
 func TestServer_CreateUser(t *testing.T) {
 
-	storage, ts := MockServerInit(t)
+	storage, ts, controller := MockServerInit(t)
+	defer controller.Finish()
 
 	usr := users.User{
 		Id:       1,
@@ -39,7 +39,8 @@ func TestServer_CreateUser(t *testing.T) {
 }
 
 func TestServer_UpdateUser(t *testing.T) {
-	storage, ts := MockServerInit(t)
+	storage, ts, controller := MockServerInit(t)
+	defer controller.Finish()
 
 	usr := users.User{
 		Id:       1,
@@ -48,16 +49,26 @@ func TestServer_UpdateUser(t *testing.T) {
 		Surname:  "test",
 	}
 
-	storage.EXPECT().UpdateUser(&usr)
+	// Fail
+	storage.EXPECT().UpdateUser(&usr).Return(errors.New("id not found in database"))
 
 	res, err := ts.UpdateUser(context.Background(), &usr)
 
-	assert.NoError(t, err)
+	assert.Error(t, err)
 	assert.Equal(t, "Couldn't find user of id "+string(usr.GetId()), res.GetMessage())
+
+	// Pass
+	storage.EXPECT().UpdateUser(&usr)
+
+	res, err = ts.UpdateUser(context.Background(), &usr)
+
+	assert.NoError(t, err)
+	assert.Equal(t, "Successfully updated user "+usr.GetUsername(), res.GetMessage())
 }
 
 func TestServer_DeleteUser(t *testing.T) {
-	storage, ts := MockServerInit(t)
+	storage, ts, controller := MockServerInit(t)
+	defer controller.Finish()
 
 	usr := users.Id{
 		Id: 1,
@@ -72,7 +83,8 @@ func TestServer_DeleteUser(t *testing.T) {
 }
 
 func TestServer_ReadUser(t *testing.T) {
-	storage, ts := MockServerInit(t)
+	storage, ts, controller := MockServerInit(t)
+	defer controller.Finish()
 
 	usr := users.Id{
 		Id: 1,
@@ -87,7 +99,8 @@ func TestServer_ReadUser(t *testing.T) {
 }
 
 func TestServer_ReadUsers(t *testing.T) {
-	storage, ts := MockServerInit(t)
+	storage, ts, controller := MockServerInit(t)
+	defer controller.Finish()
 
 	storage.EXPECT().ReadUsers()
 

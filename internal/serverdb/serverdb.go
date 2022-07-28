@@ -17,10 +17,11 @@ func (s *Server) CreateUser(ctx context.Context, in *users.User) (*users.UserRes
 }
 
 func (s *Server) UpdateUser(ctx context.Context, in *users.User) (*users.UserResponse, error) {
-	if s.Database.UpdateUser(in) {
+	err := s.Database.UpdateUser(in)
+	if err == nil {
 		return &users.UserResponse{Message: "Successfully updated user " + in.GetUsername()}, nil
 	}
-	return &users.UserResponse{Message: "Couldn't find user of id " + string(in.GetId())}, nil
+	return &users.UserResponse{Message: "Couldn't find user of id " + string(in.GetId())}, err
 }
 
 func (s *Server) DeleteUser(ctx context.Context, in *users.Id) (*users.UserResponse, error) {
