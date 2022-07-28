@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	addr = flag.String("addr", "localhost:8001", "the address to connect to")
+	addr = flag.String("addr", "localhost:8080", "the address to connect to")
 )
 
 func main() {

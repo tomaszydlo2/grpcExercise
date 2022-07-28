@@ -2,14 +2,39 @@ syntax = "proto3";
 
 package users;
 
+import "google/api/annotations.proto";
+
 option go_package="./users";
 
 service users{
-  rpc CreateUser(User) returns (UserResponse){}
-  rpc UpdateUser(User) returns (UserResponse){}
-  rpc DeleteUser(Id) returns (UserResponse){}
-  rpc ReadUser(Id) returns (UserResponse){}
-  rpc ReadUsers(Empty) returns (UserResponse){}
+  rpc CreateUser(User) returns (UserResponse){
+    option (google.api.http) = {
+      post: "/addUsr"
+      body: "*"
+  };
+  }
+  rpc UpdateUser(User) returns (UserResponse){
+    option (google.api.http) = {
+      put: "/updateUsr"
+      body: "*"
+    };
+  }
+  rpc DeleteUser(Id) returns (UserResponse){
+    option (google.api.http) = {
+      put: "/deleteUsr"
+      body: "*"
+    };
+  }
+  rpc ReadUser(Id) returns (UserResponse){
+    option (google.api.http) = {
+      get: "/getUsr"
+    };
+  }
+  rpc ReadUsers(Empty) returns (UserResponse){
+    option (google.api.http) = {
+      get: "/getUsrs"
+    };
+  }
 }
 
 message Empty{
