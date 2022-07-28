@@ -89,10 +89,10 @@ func (mr *MockStorageMockRecorder) ReadUsers() *gomock.Call {
 }
 
 // UpdateUser mocks base method.
-func (m *MockStorage) UpdateUser(arg0 *users.User) bool {
+func (m *MockStorage) UpdateUser(arg0 *users.User) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateUser", arg0)
-	ret0, _ := ret[0].(bool)
+	ret0, _ := ret[0].(error)
 	return ret0
 }
 

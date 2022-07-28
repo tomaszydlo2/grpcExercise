@@ -1,6 +1,7 @@
 package db
 
 import (
+	"errors"
 	"grpcExercise/internal/users"
 )
 
@@ -10,7 +11,7 @@ type Db struct {
 
 type Storage interface {
 	CreateUser(*users.User)
-	UpdateUser(*users.User) bool
+	UpdateUser(*users.User) error
 	DeleteUser(*users.Id) bool
 	ReadUser(*users.Id) string
 	ReadUsers() string
@@ -25,7 +26,7 @@ func (db *Db) CreateUser(in *users.User) {
 	})
 }
 
-func (db *Db) UpdateUser(in *users.User) bool {
+func (db *Db) UpdateUser(in *users.User) error {
 	for i, v := range db.usersList {
 		if v.Id == in.GetId() {
 			db.usersList[i] = users.User{
@@ -34,10 +35,10 @@ func (db *Db) UpdateUser(in *users.User) bool {
 				Name:     in.GetName(),
 				Surname:  in.GetSurname(),
 			}
-			return true
+			return nil
 		}
 	}
-	return false
+	return errors.New("id not found in database")
 }
 
 func (db *Db) DeleteUser(in *users.Id) bool {
